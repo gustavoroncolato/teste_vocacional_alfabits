@@ -1,0 +1,16 @@
+{
+  "name": "Teste Vocacional Alfabits",
+  "short_name": "Vocacional",
+  "description": "Descubra as áreas e cursos que combinam com você.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f6f5f0",
+  "theme_color": "#36683b",
+  "lang": "pt-BR",
+  "icons": [
+    { "src": "/static/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/static/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Painel | Teste Vocacional Alfabits</title>
+  <meta name="theme-color" content="#36683b">
+  <link rel="icon" href="/static/icon-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,500;0,700;0,800;1,800&family=Source+Sans+3:wght@400;600;700&display=swap">
+  <link rel="stylesheet" href="/static/style.css?v=5">
+  <link rel="stylesheet" href="/static/admin.css?v=2">
+</head>
+<body>
+
+<!-- Login -->
+<main id="login" class="login hidden">
+  <img class="logo" src="/static/logo_alfabits.png" alt="Alfabits" width="720" height="234">
+  <h1>Painel do Teste Vocacional</h1>
+  <form id="login-form" novalidate>
+    <label>Usuário
+      <input name="usuario" autocomplete="username" required>
+    </label>
+    <label>Senha
+      <input name="senha" type="password" autocomplete="current-password" required>
+    </label>
+    <p class="error" id="login-error" role="alert"></p>
+    <button class="btn primary" type="submit" id="btn-login">Entrar</button>
+  </form>
+</main>
+
+<!-- Painel -->
+<div id="dash" class="dash hidden">
+  <header class="a-top">
+    <img src="/static/logo_alfabits.png" alt="Alfabits" width="720" height="234">
+    <span class="a-title">Painel do Teste Vocacional</span>
+    <span class="a-actions">
+      <button class="a-btn" id="btn-refresh" type="button">Atualizar</button>
+      <button class="a-btn" id="btn-logout" type="button">Sair</button>
+    </span>
+  </header>
+
+  <section class="stats" id="stats"></section>
+
+  <details class="legend">
+    <summary>Como funciona a temperatura do lead</summary>
+    <p>Cada aluno ganha pontos pelo que fez na página de resultado:</p>
+    <ul>
+      <li>Pediu para conversar com a Alfabits: <b>+100</b></li>
+      <li>Compartilhou o resultado: <b>+15</b> por vez (até 30)</li>
+      <li>Família ou amigos abriram o link: <b>+15</b></li>
+      <li>Salvou em PDF: <b>+10</b></li>
+      <li>Abriu outra aba de curso: <b>+3</b> por curso</li>
+      <li>Voltou para ver a página de novo: <b>+5</b></li>
+    </ul>
+    <p><span class="temp quente">Quente</span> 100 pontos ou mais (pediu para conversar) ·
+      <span class="temp morno">Morno</span> de 20 a 99 · <span class="temp frio">Frio</span> menos de 20</p>
+  </details>
+
+  <section class="filters" id="filters">
+    <label>Autorizou contato
+      <select id="f-contato"><option value="">Todos</option><option value="sim">Sim</option><option value="nao">Não</option></select>
+    </label>
+    <label>Ordenar por
+      <select id="f-ordem">
+        <option value="quente">Mais quente primeiro</option>
+        <option value="frio">Mais frio primeiro</option>
+        <option value="recente">Mais recente primeiro</option>
+        <option value="antigo">Mais antigo primeiro</option>
+        <option value="nome">Nome (A-Z)</option>
+      </select>
+    </label>
+    <label class="f-search">Buscar
+      <input type="search" id="f-busca" placeholder="Nome ou WhatsApp">
+    </label>
+    <label>Cidade <select id="f-cidade"></select></label>
+    <label>Escola <select id="f-escola"></select></label>
+    <label>Idade <select id="f-idade"></select></label>
+    <label>Série <select id="f-serie"></select></label>
+    <label>Temperatura
+      <select id="f-temp"><option value="">Todas</option><option value="quente">Quente</option><option value="morno">Morno</option><option value="frio">Frio</option></select>
+    </label>
+    <label>Pediu para conversar
+      <select id="f-conversar"><option value="">Todos</option><option value="sim">Sim</option><option value="nao">Não</option></select>
+    </label>
+    <label>Compartilhou
+      <select id="f-compart"><option value="">Todos</option><option value="sim">Sim</option><option value="nao">Não</option></select>
+    </label>
+  </section>
+
+  <div class="toolbar">
+    <span id="count" class="count"></span>
+    <button class="a-btn" id="btn-clear" type="button">Limpar filtros</button>
+    <button class="a-btn" id="btn-csv" type="button">Baixar planilha (filtro atual)</button>
+    <button class="a-btn" id="btn-reproc" type="button" title="Gera de novo com a IA os resultados que ficaram com o conteúdo padrão">Refazer resultados sem IA</button>
+  </div>
+
+  <div class="table-wrap">
+    <table class="grid">
+      <thead>
+        <tr>
+          <th>Temp.</th><th>Aluno</th><th>WhatsApp</th><th>Cidade</th><th>Escola / série</th><th>Contato</th>
+          <th>Cursos sugeridos</th><th>Conversar</th><th>Compart.</th><th>PDF</th><th>Visitas</th><th>Data</th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <p class="empty hidden" id="empty">Nenhum aluno com esses filtros.</p>
+  </div>
+</div>
+
+<!-- Detalhe do aluno -->
+<dialog id="detail" class="detail">
+  <div class="d-head">
+    <div>
+      <h2 id="d-nome"></h2>
+      <p id="d-sub" class="muted"></p>
+    </div>
+    <button class="a-btn" id="d-close" type="button" aria-label="Fechar">Fechar</button>
+  </div>
+  <div id="d-body"></div>
+</dialog>
+
+<script src="/static/admin.js?v=2"></script>
+</body>
+</html>

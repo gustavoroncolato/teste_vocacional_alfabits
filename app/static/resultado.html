@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Meu resultado | Teste Vocacional Alfabits</title>
+  <meta name="theme-color" content="#36683b">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/static/icon-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,500;0,700;0,800;1,800&family=Source+Sans+3:wght@400;600;700&display=swap">
+  <link rel="stylesheet" href="/static/style.css?v=5">
+  <link rel="stylesheet" href="/static/resultado.css?v=3">
+</head>
+<body>
+<main id="app" class="result">
+
+  <header class="r-top">
+    <img class="r-logo" src="/static/logo_alfabits.png" alt="Alfabits - centro de ensino" width="720" height="234">
+    <span class="r-top-label">Teste Vocacional</span>
+  </header>
+
+  <section class="hero">
+    <p class="hello" id="r-hello">Carregando seu resultado...</p>
+    <h1 id="r-title"></h1>
+    <div class="traits" id="r-traits"></div>
+  </section>
+
+  <div class="courses-head">
+    <h2>Cursos que combinam com você</h2>
+    <p class="muted">Toque em cada um para ver como é.</p>
+  </div>
+  <nav class="tabs" id="tabs" role="tablist" aria-label="Cursos sugeridos"></nav>
+  <div id="panels"></div>
+
+  <section class="share">
+    <h2>Mostre para sua família</h2>
+    <p class="muted">Envie o link desta página para quem você quiser.</p>
+    <button class="btn primary" id="btn-share">Compartilhar resultado</button>
+    <div class="share-menu hidden" id="share-menu">
+      <a class="btn whatsapp" id="share-wa" target="_blank" rel="noopener">Enviar pelo WhatsApp</a>
+      <button class="btn ghost" id="share-copy" type="button">Copiar link</button>
+    </div>
+    <label class="share-num">Ou envie direto para um WhatsApp
+      <span class="row">
+        <input id="share-phone" type="tel" inputmode="numeric" maxlength="16" placeholder="(18) 99999-9999" autocomplete="off">
+        <button class="btn whatsapp" id="btn-share-num" type="button">Enviar</button>
+      </span>
+    </label>
+    <p class="error" id="share-error" role="alert"></p>
+    <button class="btn ghost" id="btn-pdf">Salvar em PDF</button>
+  </section>
+
+  <section class="cta" id="cta">
+    <img class="cta-logo" src="/static/logo_alfabits.png" alt="Alfabits" width="720" height="234">
+    <p>A Alfabits é um centro de ensino com cursos livres que ajudam a desenvolver habilidades para essas áreas.
+      Se quiser, bora bater um papo sobre o seu futuro.</p>
+    <button class="btn ghost" id="btn-talk">Quero conversar com a Alfabits</button>
+
+    <form id="talk-form" class="hidden" novalidate>
+      <fieldset>
+        <legend>Qual dessas áreas mais te interessou?</legend>
+        <div class="chips" id="talk-cursos"></div>
+      </fieldset>
+      <fieldset>
+        <legend>Melhor período para falar</legend>
+        <div class="chips">
+          <label class="chip"><input type="radio" name="periodo" value="manha"><span>Manhã</span></label>
+          <label class="chip"><input type="radio" name="periodo" value="tarde"><span>Tarde</span></label>
+          <label class="chip"><input type="radio" name="periodo" value="noite"><span>Noite</span></label>
+          <label class="chip"><input type="radio" name="periodo" value="qualquer"><span>Qualquer</span></label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Com quem devemos falar?</legend>
+        <div class="chips">
+          <label class="chip"><input type="radio" name="quem" value="aluno" checked><span>Comigo</span></label>
+          <label class="chip"><input type="radio" name="quem" value="responsavel"><span>Com meu responsável</span></label>
+        </div>
+      </fieldset>
+      <div id="resp-fields" class="hidden">
+        <label>Nome do responsável
+          <input name="responsavel_nome" maxlength="80" autocomplete="off">
+        </label>
+        <label>WhatsApp do responsável
+          <input name="responsavel_telefone" type="tel" inputmode="numeric" maxlength="16" placeholder="(18) 99999-9999" autocomplete="off">
+        </label>
+      </div>
+      <label>Quer contar algo? <span class="opt">(opcional)</span>
+        <textarea name="mensagem" maxlength="300" placeholder="Ex.: quero saber os horários dos cursos"></textarea>
+      </label>
+      <p class="small note">Ao enviar, você autoriza a Alfabits a entrar em contato.</p>
+      <p class="error" id="talk-error" role="alert"></p>
+      <button class="btn primary" type="submit" id="btn-talk-send">Enviar</button>
+    </form>
+
+    <div id="talk-ok" class="hidden">
+      <p class="ok-msg">Recebemos! A equipe da Alfabits vai entrar em contato com você.</p>
+      <a class="btn whatsapp hidden" id="talk-wa" target="_blank" rel="noopener">Chamar a Alfabits no WhatsApp agora</a>
+    </div>
+  </section>
+
+  <footer class="r-foot">
+    <p>Este resultado foi gerado por inteligência artificial a partir das suas respostas ao teste.</p>
+  </footer>
+</main>
+<script src="/static/resultado.js?v=3"></script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Teste Vocacional | Alfabits</title>
+  <meta name="description" content="Descubra as áreas e cursos que combinam com você.">
+  <meta name="theme-color" content="#36683b">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/static/icon-192.png">
+  <link rel="apple-touch-icon" href="/static/icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,500;0,700;0,800;1,800&family=Source+Sans+3:wght@400;600;700&display=swap">
+  <link rel="stylesheet" href="/static/style.css?v=5">
+</head>
+<body>
+<main id="app">
+
+  <!-- Intro -->
+  <section class="screen active" id="s-intro">
+    <img class="logo" src="/static/logo_alfabits.png" alt="Alfabits - centro de ensino" width="720" height="234">
+    <p class="kicker">Teste Vocacional</p>
+    <h1>Descubra o que combina com você</h1>
+    <p class="lead">Está no ensino médio e ainda não sabe o que prestar no vestibular ou no ENEM? Responda algumas perguntas rápidas e veja as áreas e os cursos que têm mais a ver com o seu jeito.</p>
+    <ul class="facts">
+      <li><b>5 a 7 minutos</b> para responder</li>
+      <li><b>Sem resposta certa ou errada</b>: responda como você é hoje</li>
+    </ul>
+    <button class="btn primary" data-go="form">Começar</button>
+    <button class="btn ghost hidden" id="btn-resume">Continuar de onde parei</button>
+  </section>
+
+  <!-- Dados -->
+  <section class="screen" id="s-form">
+    <img class="logo small" src="/static/logo_alfabits.png" alt="Alfabits" width="720" height="234">
+    <h2>Antes de começar</h2>
+    <p class="muted">Precisamos de alguns dados para enviar o seu resultado.</p>
+    <form id="profile-form" novalidate>
+      <label>Nome completo
+        <input name="nome" autocomplete="name" required maxlength="80" placeholder="Seu nome">
+      </label>
+      <label>WhatsApp (com DDD)
+        <input name="telefone" type="tel" inputmode="numeric" autocomplete="tel-national" required placeholder="(18) 99999-9999" maxlength="16">
+      </label>
+      <label>Data de nascimento
+        <input name="nascimento" type="date" required min="1926-01-01">
+      </label>
+      <label>Cidade
+        <input name="cidade" autocomplete="address-level2" required maxlength="80" placeholder="Ex.: Pirapozinho">
+      </label>
+      <label>Onde você estuda?
+        <input name="escola" required maxlength="120" placeholder="Nome da sua escola">
+      </label>
+      <label>Série / ano <span class="opt">(opcional)</span>
+        <select name="serie">
+          <option value="">Selecione</option>
+          <option>1º ano do Ensino Médio</option>
+          <option>2º ano do Ensino Médio</option>
+          <option>3º ano do Ensino Médio</option>
+          <option>Cursinho / já terminei o Ensino Médio</option>
+          <option>Outro</option>
+        </select>
+      </label>
+      <label class="check">
+        <input type="checkbox" name="aceita_lgpd" required>
+        <span>Li e aceito o uso dos meus dados para gerar e enviar meu resultado (LGPD).*</span>
+      </label>
+      <label class="check">
+        <input type="checkbox" name="aceita_contato">
+        <span>Aceito que a Alfabits entre em contato comigo.</span>
+      </label>
+      <p class="error" id="form-error" role="alert"></p>
+      <button class="btn primary" type="submit" id="btn-start">Começar o teste</button>
+    </form>
+  </section>
+
+  <!-- Perguntas -->
+  <section class="screen" id="s-quiz">
+    <div class="progress"><div class="bar" id="bar"></div></div>
+    <div class="qmeta"><span id="qcount"></span><span id="qphase"></span></div>
+    <h2 class="question" id="qtext"></h2>
+    <div class="options" id="options"></div>
+    <button class="link" id="btn-back">Voltar</button>
+  </section>
+
+  <!-- Perguntas abertas -->
+  <section class="screen" id="s-open">
+    <div class="progress"><div class="bar" id="bar2"></div></div>
+    <h2>Quase lá! Conte um pouco sobre você</h2>
+    <form id="open-form"></form>
+    <p class="error" id="open-error" role="alert"></p>
+    <button class="btn primary" id="btn-finish">Ver meu resultado</button>
+  </section>
+
+  <!-- Carregando -->
+  <section class="screen" id="s-loading">
+    <img class="logo small" src="/static/logo_alfabits.png" alt="Alfabits" width="720" height="234">
+    <div class="spinner" aria-hidden="true"></div>
+    <h2 id="loading-text">Analisando suas respostas...</h2>
+    <ol class="steps hidden" id="loading-steps" aria-live="polite">
+      <li>Somando suas respostas</li>
+      <li>Encontrando seus perfis mais fortes</li>
+      <li>Escolhendo os cursos que combinam com você</li>
+      <li>Montando sua página de resultado</li>
+    </ol>
+    <p class="muted" id="loading-sub">Isso leva só alguns segundos.</p>
+  </section>
+
+</main>
+<script src="/static/app.js?v=5"></script>
+</body>
+</html>
