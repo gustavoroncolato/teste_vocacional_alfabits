@@ -217,6 +217,7 @@ async def resultado(token: str):
         "perfil": [{"nome": DIMENSIONS[d]["nome"], "descricao": DIMENSIONS[d]["descricao"]} for d in perfil["top_dimensoes"][:2]],
         "cursos": cursos,
         "org": {"nome": settings.org_name, "whatsapp": bool(settings.org_whatsapp)},
+        "whatsapp_link": _wa_alfabits(part),
         "interesse_enviado": part["interesse"] is not None,
     }
 
@@ -244,9 +245,11 @@ async def evento(ev: EventoIn):
 
 
 class InteresseIn(BaseModel):
+    """Hoje a página só manda token + dono (o aluno clica e vai direto para o WhatsApp da Alfabits).
+    Os outros campos continuam aceitos, opcionais."""
     token: str = Field(max_length=40)
-    curso: str = Field(min_length=2, max_length=80)
-    periodo: str = Field(max_length=20)
+    curso: str = Field(default="", max_length=80)
+    periodo: str = Field(default="", max_length=20)
     quem: str = Field(default="aluno", max_length=20)
     mensagem: str = Field(default="", max_length=300)
     responsavel_nome: str = Field(default="", max_length=80)
@@ -256,7 +259,7 @@ class InteresseIn(BaseModel):
     @field_validator("periodo")
     @classmethod
     def _periodo(cls, v: str) -> str:
-        if v not in {"manha", "tarde", "noite", "qualquer"}:
+        if v not in {"", "manha", "tarde", "noite", "qualquer"}:
             raise ValueError("escolha um período")
         return v
 
@@ -270,19 +273,21 @@ class InteresseIn(BaseModel):
 async def interesse(body: InteresseIn):
     part = await _by_token(body.token)
     cursos_validos = {o["curso"] for o in part["opcoes"] or []} | {"Ainda não sei"}
-    if body.curso not in cursos_validos:
+    if body.curso and body.curso not in cursos_validos:
         raise HTTPException(422, "Escolha um dos cursos")
     dados = body.model_dump(exclude={"token"})
     dados["mensagem"] = dados["mensagem"].strip()
     await run_in_threadpool(db.save_interest, part["id"], dados)
     await run_in_threadpool(db.add_event, part["id"], "enviou_interesse", body.curso, body.periodo, body.dono)
-    link = None
-    if settings.org_whatsapp:
-        area = "" if body.curso == "Ainda não sei" else f" Me interessei pela área de {body.curso}."
-        texto = (f"Olá! Sou {part['nome'].split(' ')[0]}, fiz o Teste Vocacional {settings.org_name}.{area} "
-                 f"Quero conhecer os cursos da {settings.org_name}.")
-        link = f"https://wa.me/{settings.org_whatsapp}?text={quote(texto)}"
-    return {"ok": True, "whatsapp_link": link}
+    return {"ok": True, "whatsapp_link": _wa_alfabits(part, body.curso)}
+
+
+def _wa_alfabits(part: dict, curso: str = "") -> str | None:
+    """Link para o aluno chamar a Alfabits no WhatsApp, com a mensagem pronta."""
+    if not settings.org_whatsapp:
+        return None
+    texto = f"Olá! Sou {part['nome'].split(' ')[0]}, fiz o Teste Vocacional. Quero conhecer os cursos da {settings.org_name}."
+    return f"https://wa.me/{settings.org_whatsapp}?text={quote(texto)}"
 
 
 # ---------------------------------------------------------------- admin

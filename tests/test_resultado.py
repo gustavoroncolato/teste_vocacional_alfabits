@@ -155,6 +155,20 @@ def test_interesse_salva_e_devolve_link_para_a_alfabits(client):
     assert _resultado(client, res["token"])["interesse_enviado"] is True
 
 
+def test_um_toque_leva_ao_whatsapp_da_alfabits(client):
+    pid, res = run_full_test(client, perfil={**PERFIL, "aceita_contato": False})
+    wait_status(pid)
+    out = _resultado(client, res["token"])
+    texto = httpx.URL(out["whatsapp_link"]).params["text"]
+    assert out["whatsapp_link"].startswith("https://wa.me/551832690000?text=")
+    assert texto == "Olá! Sou Maria, fiz o Teste Vocacional. Quero conhecer os cursos da Alfabits."
+    r = client.post("/api/interesse", json={"token": res["token"], "dono": True})  # só o toque, sem formulário
+    assert r.status_code == 200
+    p = db.get_participant(pid)
+    assert p["interesse"] and p["aceita_contato"] == 1
+    assert _resultado(client, res["token"])["interesse_enviado"] is True
+
+
 def test_interesse_validacoes(client):
     pid, res = run_full_test(client)
     wait_status(pid)

@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,500;0,700;0,800;1,800&family=Source+Sans+3:wght@400;600;700&display=swap">
   <link rel="stylesheet" href="/static/style.css?v=5">
-  <link rel="stylesheet" href="/static/resultado.css?v=3">
+  <link rel="stylesheet" href="/static/resultado.css?v=4">
 </head>
 <body>
 <main id="app" class="result">
@@ -57,55 +57,15 @@
     <img class="cta-logo" src="/static/logo_alfabits.png" alt="Alfabits" width="720" height="234">
     <p>A Alfabits é um centro de ensino com cursos livres que ajudam a desenvolver habilidades para essas áreas.
       Se quiser, bora bater um papo sobre o seu futuro.</p>
-    <button class="btn ghost" id="btn-talk">Quero conversar com a Alfabits</button>
-
-    <form id="talk-form" class="hidden" novalidate>
-      <fieldset>
-        <legend>Qual dessas áreas mais te interessou?</legend>
-        <div class="chips" id="talk-cursos"></div>
-      </fieldset>
-      <fieldset>
-        <legend>Melhor período para falar</legend>
-        <div class="chips">
-          <label class="chip"><input type="radio" name="periodo" value="manha"><span>Manhã</span></label>
-          <label class="chip"><input type="radio" name="periodo" value="tarde"><span>Tarde</span></label>
-          <label class="chip"><input type="radio" name="periodo" value="noite"><span>Noite</span></label>
-          <label class="chip"><input type="radio" name="periodo" value="qualquer"><span>Qualquer</span></label>
-        </div>
-      </fieldset>
-      <fieldset>
-        <legend>Com quem devemos falar?</legend>
-        <div class="chips">
-          <label class="chip"><input type="radio" name="quem" value="aluno" checked><span>Comigo</span></label>
-          <label class="chip"><input type="radio" name="quem" value="responsavel"><span>Com meu responsável</span></label>
-        </div>
-      </fieldset>
-      <div id="resp-fields" class="hidden">
-        <label>Nome do responsável
-          <input name="responsavel_nome" maxlength="80" autocomplete="off">
-        </label>
-        <label>WhatsApp do responsável
-          <input name="responsavel_telefone" type="tel" inputmode="numeric" maxlength="16" placeholder="(18) 99999-9999" autocomplete="off">
-        </label>
-      </div>
-      <label>Quer contar algo? <span class="opt">(opcional)</span>
-        <textarea name="mensagem" maxlength="300" placeholder="Ex.: quero saber os horários dos cursos"></textarea>
-      </label>
-      <p class="small note">Ao enviar, você autoriza a Alfabits a entrar em contato.</p>
-      <p class="error" id="talk-error" role="alert"></p>
-      <button class="btn primary" type="submit" id="btn-talk-send">Enviar</button>
-    </form>
-
-    <div id="talk-ok" class="hidden">
-      <p class="ok-msg">Recebemos! A equipe da Alfabits vai entrar em contato com você.</p>
-      <a class="btn whatsapp hidden" id="talk-wa" target="_blank" rel="noopener">Chamar a Alfabits no WhatsApp agora</a>
-    </div>
+    <a class="btn ghost hidden" id="btn-talk" target="_blank" rel="noopener">Conversar com a Alfabits no WhatsApp</a>
+    <button class="btn ghost hidden" id="btn-talk-nowa" type="button">Quero conversar com a Alfabits</button>
+    <p class="ok-msg hidden" id="talk-ok">Recebemos! A equipe da Alfabits vai entrar em contato com você.</p>
   </section>
 
   <footer class="r-foot">
     <p>Este resultado foi gerado por inteligência artificial a partir das suas respostas ao teste.</p>
   </footer>
 </main>
-<script src="/static/resultado.js?v=3"></script>
+<script src="/static/resultado.js?v=4"></script>
 </body>
 </html>

@@ -1,7 +1,7 @@
 // Service worker: cache dos arquivos estáticos (app abre rápido e funciona com internet fraca).
 // As chamadas /api/* sempre vão para a rede.
-const CACHE = "tv-v5";
-const ASSETS = ["/", "/static/style.css?v=5", "/static/app.js?v=5", "/static/resultado.css?v=3", "/static/resultado.js?v=3", "/static/icon-192.png", "/static/logo_alfabits.png", "/manifest.webmanifest"];
+const CACHE = "tv-v6";
+const ASSETS = ["/", "/static/style.css?v=5", "/static/app.js?v=5", "/static/resultado.css?v=4", "/static/resultado.js?v=4", "/static/icon-192.png", "/static/logo_alfabits.png", "/manifest.webmanifest"];
 
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(ASSETS)).then(() => self.skipWaiting()));

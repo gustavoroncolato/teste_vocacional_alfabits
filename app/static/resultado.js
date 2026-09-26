@@ -60,8 +60,7 @@
     renderTabs();
     data.cursos.forEach((c, i) => renderPanel(i, c));
     if (!data.cursos.length) renderWaiting();
-    renderTalkCourses();
-    if (data.interesse_enviado) showTalkOk(null);
+    renderTalk();
   }
 
   function renderWaiting() {
@@ -127,64 +126,41 @@
     el.innerHTML = html;
   }
 
-  // ---------------------------------------------------------------- quero conversar
-  const talkForm = $("#talk-form");
-  $("#btn-talk").addEventListener("click", () => {
-    $("#btn-talk").classList.add("hidden");
-    talkForm.classList.remove("hidden");
+  // ---------------------------------------------------------------- conversar com a Alfabits
+  // Um toque: registra o interesse (lead quente no painel) e abre o WhatsApp da Alfabits com a mensagem pronta.
+  function registerInterest() {
     track("clicou_conversar");
-  });
-  talkForm.addEventListener("change", (e) => {
-    if (e.target.name === "quem") $("#resp-fields").classList.toggle("hidden", e.target.value !== "responsavel");
-    $("#talk-error").textContent = "";
-  });
-  maskPhone(talkForm.elements.responsavel_telefone);
-
-  function renderTalkCourses() {
-    const box = $("#talk-cursos");
-    const opts = [...data.cursos.map((c) => c.curso), "Ainda não sei"];
-    if (!data.cursos.length || box.dataset.key === opts.join("|")) return;
-    box.dataset.key = opts.join("|");
-    box.innerHTML = opts.map((o) => `<label class="chip"><input type="radio" name="curso" value="${esc(o)}"><span>${esc(o)}</span></label>`).join("");
-  }
-
-  talkForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const f = talkForm.elements;
-    const err = $("#talk-error");
-    const curso = f.curso?.value, periodo = f.periodo.value, quem = f.quem.value;
-    if (!curso) { err.textContent = "Escolha um curso (ou \"Ainda não sei\")."; return; }
-    if (!periodo) { err.textContent = "Escolha o melhor período."; return; }
-    if (quem === "responsavel" && phoneDigits(f.responsavel_telefone.value).length < 10) {
-      err.textContent = "Informe o WhatsApp do responsável com DDD."; return;
-    }
-    const btn = $("#btn-talk-send");
-    btn.disabled = true;
     try {
-      const res = await fetch("/api/interesse", {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          token, curso, periodo, quem, dono, mensagem: f.mensagem.value,
-          responsavel_nome: quem === "responsavel" ? f.responsavel_nome.value : "",
-          responsavel_telefone: quem === "responsavel" ? f.responsavel_telefone.value : "",
-        }),
-      });
-      const out = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(out.detail || "Não foi possível enviar. Tente de novo.");
-      showTalkOk(out.whatsapp_link);
-    } catch (ex) {
-      err.textContent = ex.message;
-    } finally {
-      btn.disabled = false;
-    }
-  });
-
-  function showTalkOk(waLink) {
-    $("#btn-talk").classList.add("hidden");
-    talkForm.classList.add("hidden");
-    $("#talk-ok").classList.remove("hidden");
-    if (waLink) { const a = $("#talk-wa"); a.href = waLink; a.classList.remove("hidden"); }
+      fetch("/api/interesse", {
+        method: "POST", keepalive: true, headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token, dono, quem: dono ? "aluno" : "responsavel" }),
+      }).catch(() => {});
+    } catch { /* ignora */ }
   }
+
+  function renderTalk() {
+    const wa = $("#btn-talk"), nowa = $("#btn-talk-nowa");
+    if (data.whatsapp_link) {
+      let link = data.whatsapp_link;
+      if (!dono) {  // família/amigos vendo o resultado: mensagem em nome de quem está vendo
+        const n = link.indexOf("?text=");
+        const txt = `Olá! Vi o resultado do Teste Vocacional de ${data.nome}. Quero conhecer os cursos da ${data.org.nome}.`;
+        link = link.slice(0, n) + "?text=" + encodeURIComponent(txt);
+      }
+      wa.href = link;
+      wa.classList.remove("hidden");
+    } else if (!data.interesse_enviado) {
+      nowa.classList.remove("hidden");  // sem WhatsApp configurado: só registra e avisa
+    } else {
+      $("#talk-ok").classList.remove("hidden");
+    }
+  }
+  $("#btn-talk").addEventListener("click", registerInterest);
+  $("#btn-talk-nowa").addEventListener("click", () => {
+    registerInterest();
+    $("#btn-talk-nowa").classList.add("hidden");
+    $("#talk-ok").classList.remove("hidden");
+  });
 
   // ---------------------------------------------------------------- compartilhar / PDF
   const shareMsg = () => `Fiz o Teste Vocacional ${data?.org?.nome || "Alfabits"}! Veja meu resultado:`;

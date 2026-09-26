@@ -233,11 +233,12 @@
       ["Família/amigos abriram o link", p.views_outros ? `${p.views_outros}x` : yesNo(false)],
       ["Salvou em PDF", p.pdf ? `Sim (${p.pdf}x)` : yesNo(false)],
       ["Cursos que abriu", p.cursos_abertos.length ? p.cursos_abertos.map(esc).join(", ") : "Só o primeiro"],
-      ["Clicou em conversar com a Alfabits", p.clicou_conversar || p.interesse ? "Sim" : yesNo(false)],
+      ["Chamou a Alfabits no WhatsApp", p.clicou_conversar || p.interesse ? "Sim" : yesNo(false)],
     ]));
     if (p.interesse) {
       const it = p.interesse;
-      h += sec("Pediu para conversar com a Alfabits", kv([
+      h += sec("Chamou a Alfabits", kv([
+        ["Quando", fmtDate(it.em)],
         ["Curso de interesse", esc(it.curso)],
         ["Melhor período", esc(it.periodo)],
         ["Falar com", esc(it.quem)],

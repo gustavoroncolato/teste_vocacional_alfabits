@@ -75,7 +75,7 @@ ol.steps-list li::before {
 .cta { border-top: 1px solid var(--border); padding: 24px 0 4px; margin: 28px 0 0; }
 .cta-logo { width: 104px; height: auto; display: block; margin: 0 0 10px; }
 .cta > p { margin: 0; color: var(--muted); font-size: 16px; }
-.cta #btn-talk { width: auto; padding: 11px 18px; font-size: 15px; margin-top: 14px; }
+.cta .btn { display: inline-block; width: auto; padding: 11px 18px; font-size: 15px; margin-top: 14px; }
 .cta form { margin-top: 8px; }
 fieldset { border: 0; padding: 0; margin: 18px 0 6px; }
 legend { font-weight: 600; font-size: 15px; margin-bottom: 8px; padding: 0; }
